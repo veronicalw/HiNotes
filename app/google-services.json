@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "663227188498",
+    "project_id": "hinotesnew",
+    "storage_bucket": "hinotesnew.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:663227188498:android:2561418f1d6f12fc07dfcb",
+        "android_client_info": {
+          "package_name": "com.example.hinotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "663227188498-op3frnmnf27pssocupe08n8n22jiqqni.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hinotes",
+            "certificate_hash": "2edc29cf013a3e766a7087e4e77cf939ba626fb5"
+          }
+        },
+        {
+          "client_id": "663227188498-biesnr2n05jpea4fbha0iclthmggam2b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC22EmY2OEKvhmdH230rugu27YvbNMDmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "663227188498-biesnr2n05jpea4fbha0iclthmggam2b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

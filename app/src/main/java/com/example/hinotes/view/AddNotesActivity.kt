@@ -1,0 +1,87 @@
+package com.example.hinotes.view
+
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.hinotes.R
+import com.example.hinotes.core.addnote_activity.AddNoteContract
+import com.example.hinotes.core.addnote_activity.AddNotePresenter
+import com.example.hinotes.core.main_activity.MainActivityContract
+import com.example.hinotes.core.main_activity.MainActivityPresenter
+import com.example.hinotes.model.Notes
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+
+class AddNotesActivity : AppCompatActivity(), AddNoteContract.View {
+    private lateinit var edtTitle: EditText
+    private lateinit var edtContent: EditText
+    lateinit var firestore: FirebaseFirestore
+    private lateinit var progressBar: ProgressBar
+    lateinit var firebaseUser: FirebaseUser
+    lateinit var mPresenter: AddNotePresenter
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_add_notes)
+        setSupportActionBar(findViewById(R.id.toolbars))
+
+        edtTitle = findViewById(R.id.edtNoteTitle)
+        edtContent = findViewById(R.id.edtNoteContent)
+        progressBar = findViewById(R.id.progressBar)
+        firestore = FirebaseFirestore.getInstance()
+        firebaseUser = FirebaseAuth.getInstance().currentUser!!
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.add_act_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId){
+            R.id.nav_save -> {
+                mPresenter = AddNotePresenter()
+                val stringTitle = edtTitle.text.toString()
+                val stringContent = edtContent.text.toString()
+                if (stringTitle.isEmpty() && stringContent.isEmpty()) {
+                    Toast.makeText(this, "your note shouldn't be empty!", Toast.LENGTH_LONG).show()
+                    return false
+                }
+                progressBar.visibility = View.VISIBLE
+//                Toast.makeText(this, "Title : " + stringTitle + "\nContent : " + stringContent, Toast.LENGTH_LONG).show()
+                mPresenter.performAddNote(stringTitle, stringContent,this@AddNotesActivity, firestore)
+//                val documentReference: DocumentReference =
+//                    firestore.collection("hinotes").document(firebaseUser.getUid()).collection("tb_notes").document()
+//                var note: HashMap<String, Any> = HashMap<String, Any>()
+//                note.put("titles", stringTitle)
+//                note.put("contents", stringContent)
+//                note.put("userOwenerId", firebaseUser.getUid())
+//                documentReference.set(note).addOnSuccessListener {
+//                    Toast.makeText(this,"Successfully Saved!", Toast.LENGTH_LONG).show()
+//                    onBackPressed()
+//                }.addOnFailureListener {
+//                    Toast.makeText(this,"Error save!", Toast.LENGTH_LONG).show()
+//                    progressBar.visibility = View.VISIBLE
+//                }
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+    override fun onAddSuccess(message: String?) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
+        finish()
+    }
+    override fun onAddFailure(message: String?) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
+        finish()
+    }
+}
