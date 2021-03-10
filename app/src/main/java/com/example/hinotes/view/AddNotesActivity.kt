@@ -48,7 +48,7 @@ class AddNotesActivity : AppCompatActivity(), AddNoteContract.View {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
             R.id.nav_save -> {
-                mPresenter = AddNotePresenter()
+                mPresenter = AddNotePresenter(this)
                 val stringTitle = edtTitle.text.toString()
                 val stringContent = edtContent.text.toString()
                 if (stringTitle.isEmpty() && stringContent.isEmpty()) {
@@ -56,21 +56,7 @@ class AddNotesActivity : AppCompatActivity(), AddNoteContract.View {
                     return false
                 }
                 progressBar.visibility = View.VISIBLE
-//                Toast.makeText(this, "Title : " + stringTitle + "\nContent : " + stringContent, Toast.LENGTH_LONG).show()
                 mPresenter.performAddNote(stringTitle, stringContent,this@AddNotesActivity, firestore)
-//                val documentReference: DocumentReference =
-//                    firestore.collection("hinotes").document(firebaseUser.getUid()).collection("tb_notes").document()
-//                var note: HashMap<String, Any> = HashMap<String, Any>()
-//                note.put("titles", stringTitle)
-//                note.put("contents", stringContent)
-//                note.put("userOwenerId", firebaseUser.getUid())
-//                documentReference.set(note).addOnSuccessListener {
-//                    Toast.makeText(this,"Successfully Saved!", Toast.LENGTH_LONG).show()
-//                    onBackPressed()
-//                }.addOnFailureListener {
-//                    Toast.makeText(this,"Error save!", Toast.LENGTH_LONG).show()
-//                    progressBar.visibility = View.VISIBLE
-//                }
                 return true
             }
             else -> super.onOptionsItemSelected(item)

@@ -1,26 +1,19 @@
 package com.example.hinotes.core.main_activity
 
+import android.content.Context
+import androidx.recyclerview.widget.RecyclerView
+import com.example.hinotes.core.addnote_activity.AddNoteContract
 import com.example.hinotes.model.Notes
+import com.google.firebase.firestore.DocumentReference
 
-class MainActivityPresenter : MainActivityContract.Presenter,
+class MainActivityPresenter(addView: MainActivityContract.View): MainActivityContract.Presenter,
     MainActivityContract.onOperationListener {
-    private lateinit var mView: MainActivityContract.View
-    private lateinit var mInteractor: MainActivityInteractor
+    private var mView: MainActivityContract.View
+    private var mInteractor: MainActivityInteractor
 
     init {
+        mView = addView
         mInteractor = MainActivityInteractor(this)
-    }
-
-    override fun onShowToast(message: String) {
-        mView.showToast(message)
-    }
-
-    override fun onStart() {
-        mView.onProcessStart()
-    }
-
-    override fun onEnd() {
-        mView.onProcessEnd()
     }
 
     override fun randomColour(): Int {
@@ -29,5 +22,17 @@ class MainActivityPresenter : MainActivityContract.Presenter,
 
     override fun profileUpdate(name: String) {
         mInteractor.getprofileUpdate(name)
+    }
+
+    override fun readNotes(context: Context, recyclerView: RecyclerView) {
+        mInteractor.performReadNotes(context, recyclerView)
+    }
+
+    override fun startListening() {
+        mInteractor.onStart()
+    }
+
+    override fun stopListening() {
+        mInteractor.onStop()
     }
 }
