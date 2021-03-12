@@ -1,9 +1,12 @@
 package com.example.hinotes.core.addnote_activity
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import com.example.hinotes.MainActivity
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,4 +33,5 @@ class AddNoteInteractor(onAddListener: AddNoteContract.onAddListener) : AddNoteC
         }
         Toast.makeText(context, "Calling Add NOTE ", Toast.LENGTH_LONG).show()
     }
+
 }

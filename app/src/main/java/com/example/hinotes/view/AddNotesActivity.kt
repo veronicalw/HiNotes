@@ -12,12 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.hinotes.R
 import com.example.hinotes.core.addnote_activity.AddNoteContract
 import com.example.hinotes.core.addnote_activity.AddNotePresenter
-import com.example.hinotes.core.main_activity.MainActivityContract
-import com.example.hinotes.core.main_activity.MainActivityPresenter
-import com.example.hinotes.model.Notes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AddNotesActivity : AppCompatActivity(), AddNoteContract.View {

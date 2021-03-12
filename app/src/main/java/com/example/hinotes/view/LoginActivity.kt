@@ -2,28 +2,24 @@ package com.example.hinotes.view
 
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.example.hinotes.MainActivity
 import com.example.hinotes.R
-import com.example.hinotes.core.login_activity.LoginContract
-import com.example.hinotes.core.login_activity.LoginPresenter
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var edtSignInEmail : EditText
-    private lateinit var edtSignInPassword : EditText
-    private lateinit var btnSignIn : Button
-    private lateinit var txtForgotPassword : TextView
+    private lateinit var edtSignInEmail: EditText
+    private lateinit var edtSignInPassword: EditText
+    private lateinit var btnSignIn: Button
+    private lateinit var txtForgotPassword: TextView
     private lateinit var txtCreateAnAccount: TextView
-    private lateinit var progressBarLogin : ProgressBar
+    private lateinit var progressBarLogin: ProgressBar
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var firebaseStore: FirebaseFirestore
     lateinit var firebaseUser: FirebaseUser
@@ -49,32 +45,36 @@ class LoginActivity : AppCompatActivity() {
             var email = edtSignInEmail.text.toString()
             var password = edtSignInPassword.text.toString()
 
-            if (email.isEmpty() || password.isEmpty()){
-                Toast.makeText(this, "Email and Password can not be empty", Toast.LENGTH_LONG).show()
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Email and Password can not be empty", Toast.LENGTH_LONG)
+                    .show()
                 return@setOnClickListener
             }
 
             progressBarLogin.visibility = View.VISIBLE
 
-            if (firebaseAuth.currentUser?.isAnonymous == true){
+            if (firebaseAuth.currentUser?.isAnonymous == true) {
                 var user: FirebaseUser
                 user = firebaseAuth.currentUser!!
-                firebaseStore.collection("hinotes").document(user.uid).delete().addOnSuccessListener {
-                    Toast.makeText(this,"All temporary notes are deleted", Toast.LENGTH_LONG).show()
-                }
+                firebaseStore.collection("hinotes").document(user.uid).delete()
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "All temporary notes are deleted", Toast.LENGTH_LONG)
+                            .show()
+                    }
                 user.delete().addOnSuccessListener {
-                    Toast.makeText(this,"Anonymous or temporary user deleted", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Anonymous or temporary user deleted", Toast.LENGTH_LONG)
+                        .show()
 
                 }
             }
 
-            firebaseAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener{
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener {
                 Toast.makeText(this, "Successfully Login! ", Toast.LENGTH_LONG).show()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }.addOnFailureListener {
-                Toast.makeText(this,"Failed Login! ", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Failed Login! ", Toast.LENGTH_LONG).show()
                 progressBarLogin.visibility = View.GONE
             }
         }
@@ -92,20 +92,20 @@ class LoginActivity : AppCompatActivity() {
 
     private fun displayAlert() {
         val alertDialog = AlertDialog.Builder(this).setTitle("Are you sure?")
-                .setMessage("Login to existing account will delete you temporary notes, create new account to save them")
-                .setPositiveButton("Save and Sync Note", object : DialogInterface.OnClickListener {
-                    override fun onClick(p0: DialogInterface?, p1: Int) {
-                        firebaseUser?.delete()?.addOnSuccessListener{
-                            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
+            .setMessage("Login to existing account will delete you temporary notes, create new account to save them")
+            .setPositiveButton("Save and Sync Note", object : DialogInterface.OnClickListener {
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+                    firebaseUser?.delete()?.addOnSuccessListener {
+                        val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     }
-                })
-                .setNegativeButton("Continue", object : DialogInterface.OnClickListener{
-                    override fun onClick(p0: DialogInterface?, p1: Int) {
-                    }
-                })
+                }
+            })
+            .setNegativeButton("Continue", object : DialogInterface.OnClickListener {
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+                }
+            })
         alertDialog.show()
     }
 }
