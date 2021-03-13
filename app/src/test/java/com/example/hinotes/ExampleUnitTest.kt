@@ -1,14 +1,19 @@
 package com.example.hinotes
-import android.app.Application
-import android.util.Log
-import com.example.hinotes.core.addnote_activity.AddNoteContract
-import com.example.hinotes.core.addnote_activity.AddNotePresenter
-import com.google.firebase.FirebaseApp
+import android.content.Context
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.rule.ActivityTestRule
+import androidx.test.runner.AndroidJUnit4
+import com.example.hinotes.core.main_activity.MainActivityContract
+import com.example.hinotes.core.main_activity.MainActivityPresenter
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.*
 import org.mockito.runners.MockitoJUnitRunner
 
 
@@ -18,29 +23,24 @@ import org.mockito.runners.MockitoJUnitRunner
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(MockitoJUnitRunner::class)
-class ExampleUnitTest: AddNoteContract.View{
+class ExampleUnitTest{
 
-    // Calling Presenter to test
-    lateinit var mPresenter : AddNotePresenter
+    //Objet Mock
+    val testName = "name"
 
-    //Input data to db
-    var titles = "Note Unit Test"
-    var contents = "This is a unit test sample for user veronicalw@gmail.com"
+    //Calling contract and presenter
+    val view = Mockito.mock(MainActivityContract.View::class.java)
+    val interactor= Mockito.mock(MainActivityContract.Interactor::class.java)
+    lateinit var mPresenter : MainActivityPresenter
+
     @Before
     fun initialize(){
-        mPresenter = AddNotePresenter(this)
+        mPresenter = MainActivityPresenter(view, interactor)
+        doNothing().`when`(interactor).getprofileUpdate(testName)
     }
     @Test
-    fun testAddNotePresenter(){
-        Mockito.verify("success")
-   }
-
-    override fun onAddSuccess(message: String?) {
-        Log.d("Firestore Add Data", "Success")
+    fun testProfileUpdate(){
+        mPresenter.profileUpdate(testName)
+        Mockito.verify(interactor, times(1)).getprofileUpdate(testName)
     }
-
-    override fun onAddFailure(message: String?) {
-        Log.d("Firestore Add Data", "Failed")
-    }
-
 }

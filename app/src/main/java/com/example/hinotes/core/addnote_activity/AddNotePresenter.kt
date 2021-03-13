@@ -4,15 +4,15 @@ import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 
 
-class AddNotePresenter(addView: AddNoteContract.View): AddNoteContract.Presenter, AddNoteContract.onAddListener {
+class AddNotePresenter(val mAddView: AddNoteContract.View, val mAddInteractor: AddNoteContract.Interactor): AddNoteContract.Presenter, AddNoteContract.onAddListener {
 
-    private val mAddView: AddNoteContract.View
-    private val mAddInteractor: AddNoteInteractor
+//    private val mAddView: AddNoteContract.View
+//    private val mAddInteractor: AddNoteInteractor
 
-    init {
-        this.mAddView = addView
-        mAddInteractor = AddNoteInteractor(this)
-    }
+//    init {
+//        this.mAddView = addView
+//        mAddInteractor = AddNoteInteractor(this)
+//    }
     override fun performAddNote(title: String, content: String, context: Context, firestore: FirebaseFirestore) {
        mAddInteractor.AddNote(title, content, context, firestore)
     }

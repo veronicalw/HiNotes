@@ -11,18 +11,24 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.hinotes.R
 import com.example.hinotes.core.addnote_activity.AddNoteContract
+import com.example.hinotes.core.addnote_activity.AddNoteInteractor
 import com.example.hinotes.core.addnote_activity.AddNotePresenter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 
-class AddNotesActivity : AppCompatActivity(), AddNoteContract.View {
+class AddNotesActivity : AppCompatActivity(), AddNoteContract.View, AddNoteContract.onAddListener {
     private lateinit var edtTitle: EditText
     private lateinit var edtContent: EditText
     lateinit var firestore: FirebaseFirestore
     private lateinit var progressBar: ProgressBar
     lateinit var firebaseUser: FirebaseUser
     lateinit var mPresenter: AddNotePresenter
+    val mInteractor = AddNoteInteractor(this)
+
+    init {
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_notes)
@@ -44,7 +50,7 @@ class AddNotesActivity : AppCompatActivity(), AddNoteContract.View {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
             R.id.nav_save -> {
-                mPresenter = AddNotePresenter(this)
+                mPresenter = AddNotePresenter(this, mInteractor)
                 val stringTitle = edtTitle.text.toString()
                 val stringContent = edtContent.text.toString()
                 if (stringTitle.isEmpty() && stringContent.isEmpty()) {
@@ -65,5 +71,13 @@ class AddNotesActivity : AppCompatActivity(), AddNoteContract.View {
     override fun onAddFailure(message: String?) {
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
         finish()
+    }
+
+    override fun onSuccessListener(message: String) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onFailureListener(message: String) {
+//        TODO("Not yet implemented")
     }
 }

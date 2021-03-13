@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.*
 import com.example.hinotes.core.main_activity.MainActivityContract
+import com.example.hinotes.core.main_activity.MainActivityInteractor
 import com.example.hinotes.core.main_activity.MainActivityPresenter
 import com.example.hinotes.view.AddNotesActivity
 import com.example.hinotes.view.RegisterActivity
@@ -23,14 +24,14 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    MainActivityContract.View {
+    MainActivityContract.View, MainActivityContract.onOperationListener{
     //Objects
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var menuDrawer: ImageView
     private lateinit var addNotes: ImageView
     private lateinit var layoutDashboard: LinearLayout
-    private lateinit var rvStore: RecyclerView
+    lateinit var rvStore: RecyclerView
     private lateinit var userNames: TextView
     private lateinit var userEmails: TextView
 
@@ -39,10 +40,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var firebaseUser: FirebaseUser
     lateinit var mListener: MainActivityPresenter
+//    var mInteractor: MainActivityInteractor
 
+    val mInteractor = MainActivityInteractor(this)
     //Custom Navigation Drawer
     private var endScale: Float = 1.8f
     lateinit var headerView: View
+
+    init {
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +71,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         firestore = FirebaseFirestore.getInstance()
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseUser = firebaseAuth.currentUser!!
-        mListener = MainActivityPresenter(this)
+        mListener = MainActivityPresenter(this,mInteractor)
 
         rvStore.layoutManager = LinearLayoutManager(this)
         rvStore.layoutManager = GridLayoutManager(this, 2)
