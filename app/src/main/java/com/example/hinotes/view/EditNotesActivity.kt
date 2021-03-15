@@ -12,19 +12,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.hinotes.R
 import com.example.hinotes.core.editnote_activity.EditNoteContract
+import com.example.hinotes.core.editnote_activity.EditNoteInteractor
 import com.example.hinotes.core.editnote_activity.EditNotePresenter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
-class EditNotesActivity : AppCompatActivity(), EditNoteContract.View {
+class EditNotesActivity : AppCompatActivity(), EditNoteContract.View, EditNoteContract.onAddListener {
     private lateinit var edtEditTitle: EditText
     private lateinit var edtEditContent: EditText
     private lateinit var progressBar: ProgressBar
     lateinit var firestore: FirebaseFirestore
     lateinit var firebaseUser: FirebaseUser
     lateinit var mPresenter: EditNotePresenter
+    val mInteractor = EditNoteInteractor(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +43,7 @@ class EditNotesActivity : AppCompatActivity(), EditNoteContract.View {
         firestore = FirebaseFirestore.getInstance()
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
 
-        mPresenter = EditNotePresenter(this)
+        mPresenter = EditNotePresenter(this, mInteractor)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

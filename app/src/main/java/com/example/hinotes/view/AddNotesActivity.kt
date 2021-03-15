@@ -74,10 +74,10 @@ class AddNotesActivity : AppCompatActivity(), AddNoteContract.View, AddNoteContr
     }
 
     override fun onSuccessListener(message: String) {
-//        TODO("Not yet implemented")
+//
     }
 
     override fun onFailureListener(message: String) {
-//        TODO("Not yet implemented")
+//
     }
 }

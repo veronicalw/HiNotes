@@ -4,14 +4,14 @@ import android.app.Activity
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 
-class EditNotePresenter(editView: EditNoteContract.View): EditNoteContract.Presenter, EditNoteContract.onAddListener {
-    private val mEditView: EditNoteContract.View
-    private val mEditInteractor: EditNoteInteractor
-
-    init {
-        this.mEditView = editView
-        mEditInteractor = EditNoteInteractor(this)
-    }
+class EditNotePresenter(val editView: EditNoteContract.View, val mEditInteractor: EditNoteContract.Interactor): EditNoteContract.Presenter, EditNoteContract.onAddListener {
+//    private val mEditView: EditNoteContract.View
+//    private val mEditInteractor: EditNoteInteractor
+//
+//    init {
+//        this.mEditView = editView
+//        mEditInteractor = EditNoteInteractor(this)
+//    }
     override fun performUpdateNote(
         title: String,
         content: String,
