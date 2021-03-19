@@ -45,41 +45,43 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (!pass.equals(confirmPass)){
+            if (!pass.equals(confirmPass) || pass.length < 6){
                 edtConfirmPassword?.setError("Password is not match or Password must contain at least 6 characters")
-            }
+            } else {
 
-            val authCredential: AuthCredential = EmailAuthProvider.getCredential(email, pass)
-            progressBarRegister.visibility = View.VISIBLE
+                val authCredential: AuthCredential = EmailAuthProvider.getCredential(email, pass)
+                progressBarRegister.visibility = View.VISIBLE
 
-            fireAuth.currentUser?.linkWithCredential(authCredential)?.addOnSuccessListener {
-                Toast.makeText(this, "Successfully Registered and Synced", Toast.LENGTH_LONG)
+                fireAuth.currentUser?.linkWithCredential(authCredential)?.addOnSuccessListener {
+                    Toast.makeText(this, "Successfully Registered and Synced", Toast.LENGTH_LONG)
                         .show()
-                val intents = Intent(this, MainActivity::class.java)
-                startActivity(intents)
-                finish()
-                user = fireAuth.currentUser!!
-                //Get User Name to Display in Navigation Header
-                val userRequest = UserProfileChangeRequest.Builder().apply {
-                    displayName = name
-                }.build()
-                user.updateProfile(userRequest)
+                    val intents = Intent(this, MainActivity::class.java)
+                    startActivity(intents)
+                    finish()
+                    user = fireAuth.currentUser!!
+                    //Get User Name to Display in Navigation Header
+                    val userRequest = UserProfileChangeRequest.Builder().apply {
+                        displayName = name
+                    }.build()
+                    user.updateProfile(userRequest)
 
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }?.addOnFailureListener {
-                Toast.makeText(this, "Failed to connect, Please Try Again ", Toast.LENGTH_LONG)
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }?.addOnFailureListener {
+                    Toast.makeText(this, "Failed to connect, Please Try Again ", Toast.LENGTH_LONG)
                         .show()
-                progressBarRegister.visibility = View.GONE
+                    progressBarRegister.visibility = View.GONE
+                }
             }
         }
         // Login link
         txtLinkLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
+//            intent.putExtra("currentUser", FirebaseAuth.getInstance().currentUser)
             startActivity(intent)
             finish()
         }
-
     }
+
 }

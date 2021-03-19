@@ -34,6 +34,7 @@ class EditNoteInteractor(onAddListener: EditNoteContract.onAddListener) :
             Toast.makeText(context,"Successfully Saved!", Toast.LENGTH_LONG).show()
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
+            context.finish()
         }.addOnFailureListener {
             Toast.makeText(context,"Error save!", Toast.LENGTH_LONG).show()
         }

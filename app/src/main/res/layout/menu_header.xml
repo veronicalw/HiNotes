@@ -60,15 +60,15 @@
             android:layout_marginLeft="15dp"
             android:textColor="@color/burlywood"/>
 
-        <TextView
-            android:id="@+id/txtSubTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="15dp"
-            android:text="Sync with your drive to get more space"
-            android:textColor="@color/burlywood"/>
+<!--        <TextView-->
+<!--            android:id="@+id/txtSubTitle"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:layout_marginLeft="15dp"-->
+<!--            android:text="Sync with your drive to get more space"-->
+<!--            android:textColor="@color/burlywood"/>-->
 
     </LinearLayout>
 

@@ -47,9 +47,6 @@ class DetailNotesActivity : AppCompatActivity() {
                 startActivity(intent)
                 return true
             }
-            R.id.nav_share -> {
-                return true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="Services">
-        <SwitchPreference
-            android:defaultValue="false"
+        <SwitchPreferenceCompat
             android:key="alarm"
             android:title="Alarm"
             android:icon="@drawable/ic_alarm_foreground"
-            android:summary="Get a notification to write new diary with alarm"/>
+            android:summary="Get a notification to write new diary with alarm"
+            android:summaryOff="off"
+            android:summaryOn="on"
+            />
     </PreferenceCategory>
 </PreferenceScreen>

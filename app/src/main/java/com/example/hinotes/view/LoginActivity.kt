@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
         progressBarLogin = findViewById(R.id.progressBarLogin)
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseStore = FirebaseFirestore.getInstance()
-        firebaseUser = firebaseAuth.currentUser!!
+        firebaseUser = firebaseAuth.currentUser
 
         displayAlert()
 
@@ -80,26 +80,29 @@ class LoginActivity : AppCompatActivity() {
         }
 
         txtForgotPassword.setOnClickListener {
-//            val intent = Intent(this@LoginActivity, ForgtPassActivity::class.java)
-//            startActivity(intent)o
+            val intent = Intent(this@LoginActivity, ForgotPassActivity::class.java)
+            startActivity(intent)
         }
 
         txtCreateAnAccount.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 
     private fun displayAlert() {
+//        val userNow = intent.getStringExtra("currentUser")
+//        firebaseUser = FirebaseAuth.getInstance().currentUser
         val alertDialog = AlertDialog.Builder(this).setTitle("Are you sure?")
             .setMessage("Login to existing account will delete you temporary notes, create new account to save them")
             .setPositiveButton("Save and Sync Note", object : DialogInterface.OnClickListener {
                 override fun onClick(p0: DialogInterface?, p1: Int) {
-                    firebaseUser?.delete()?.addOnSuccessListener {
+//                    firebaseUser?.delete()?.addOnSuccessListener {
                         val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
                         startActivity(intent)
                         finish()
-                    }
+//                    }
                 }
             })
             .setNegativeButton("Continue", object : DialogInterface.OnClickListener {

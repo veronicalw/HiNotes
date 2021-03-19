@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.text.format.DateFormat
+import android.widget.Toast
 import io.karn.notify.Notify
 import timber.log.Timber
 import java.util.*
@@ -15,6 +16,11 @@ class AlarmReceivers : BroadcastReceiver(){
         when (intent.action){
             Constants.ACTION_SET_REPETITIVE_EXACT -> {
                 createNotification(context, "Diary Time", convertTime(timeInMillis))
+                Toast.makeText(
+                    context,
+                    "Alarm is set for : " + convertTime(timeInMillis).toString(),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -22,14 +28,14 @@ class AlarmReceivers : BroadcastReceiver(){
         Notify.with(context)
             .content {
                 this.title = title
-                text = "It's your diary time!, write down your story right now :D : -$message"
+                text = "It's your diary time!\n -$message"
             }.show()
     }
 
     private fun setRepetitiveAlarm(alarmService: AlarmService){
         val cal = Calendar.getInstance().apply {
             this.timeInMillis = timeInMillis + TimeUnit.DAYS.toMillis(1)
-            Timber.d("Time to write again" + "${convertTime(this.timeInMillis)}")
+            Timber.d("Time to write again \n" + "${convertTime(this.timeInMillis)}")
         }
         alarmService.setRepetitiveAlarm(cal.timeInMillis)
     }

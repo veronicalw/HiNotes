@@ -1,7 +1,9 @@
 package com.example.hinotes
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.widget.*
@@ -10,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.*
 import com.example.hinotes.core.main_activity.MainActivityContract
 import com.example.hinotes.core.main_activity.MainActivityInteractor
@@ -24,7 +27,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    MainActivityContract.View, MainActivityContract.onOperationListener{
+    MainActivityContract.View, MainActivityContract.onOperationListener {
     //Objects
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
@@ -43,6 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //    var mInteractor: MainActivityInteractor
 
     val mInteractor = MainActivityInteractor(this)
+
     //Custom Navigation Drawer
     private var endScale: Float = 1.8f
     lateinit var headerView: View
@@ -71,7 +75,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         firestore = FirebaseFirestore.getInstance()
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseUser = firebaseAuth.currentUser!!
-        mListener = MainActivityPresenter(this,mInteractor)
+        mListener = MainActivityPresenter(this, mInteractor)
 
         rvStore.layoutManager = LinearLayoutManager(this)
         rvStore.layoutManager = GridLayoutManager(this, 2)
@@ -81,7 +85,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         headerView = navigationView.getHeaderView(0)
         userNames = headerView.findViewById(R.id.userNames)
         userEmails = headerView.findViewById(R.id.userEmails)
-//        userNames.setText(firebaseUser.displayName)
         userEmails.setText(firebaseUser.email)
 
         //To set if the logged user is anonymous
@@ -90,13 +93,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             userEmails.visibility = View.GONE
         } else {
             mListener.profileUpdate(userNames.toString())
-//            userNames.setText(firebaseUser.displayName)
             userEmails.setText(firebaseUser.email)
         }
 
         addNotes.setOnClickListener {
             val addNotesAct = Intent(this, AddNotesActivity::class.java)
             startActivity(addNotesAct)
+            finish()
         }
         navigationDrawerSetting()
     }
@@ -107,6 +110,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             FirebaseAuth.getInstance().signOut()
             val intent = Intent(this, SplashScreenActivity::class.java)
+            val pref = PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
+            pref.clear()
+            pref.commit()
             startActivity(intent)
             finish()
         }
@@ -120,6 +126,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val intent = Intent(this@MainActivity, RegisterActivity::class.java)
                     startActivity(intent)
                     finish()
+                    p0?.cancel()
                 }
             })
             .setNegativeButton("Log Out", object : DialogInterface.OnClickListener {
@@ -129,6 +136,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             val intent = Intent(this@MainActivity, SplashScreenActivity::class.java)
                             startActivity(intent)
                             finish()
+                            p0?.cancel()
                         }
                     })
                 }
@@ -146,11 +154,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     startActivity(intent)
                     true
                 }
-                R.id.nav_logout -> {
-                    checkingUser()
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                    true
-                }
                 R.id.nav_profile -> {
                     if (firebaseUser.isAnonymous) {
                         val intent = Intent(this, RegisterActivity::class.java)
@@ -163,6 +166,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.nav_settings -> {
                     val intent = Intent(this, SettingsActivity::class.java)
                     startActivity(intent)
+                    true
+                }
+                R.id.nav_logout -> {
+                    checkingUser()
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    finish()
                     true
                 }
                 else -> super.onOptionsItemSelected(it)
@@ -201,7 +210,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
-        } else super.onBackPressed()
+        } else {
+            val builder = AlertDialog.Builder(this@MainActivity)
+            builder.setTitle(R.string.app_name)
+            builder.setIcon(R.mipmap.ic_launcher)
+            builder.setMessage("Are you sure you want to exit the app?")
+                .setCancelable(false)
+                .setPositiveButton(
+                    "Yes"
+                ) { dialog, id -> finish()
+                    super.onBackPressed() }
+                .setNegativeButton(
+                    "No"
+                ) { dialog, id -> dialog.cancel()}
+            val alert = builder.create()
+            alert.show()
+        }
     }
 
     override fun onStart() {
@@ -213,4 +237,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onStop()
         mListener.stopListening()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mListener.stopListening()
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.example.hinotes.core.addnote_activity
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -28,6 +29,7 @@ class AddNoteInteractor(onAddListener: AddNoteContract.onAddListener) : AddNoteC
             Toast.makeText(context, "Successfully saved! ", Toast.LENGTH_SHORT).show()
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
+            (context as Activity).finish()
         }.addOnFailureListener {
             Toast.makeText(context, "Error save, caused by : " + it.toString(), Toast.LENGTH_LONG).show()
         }
