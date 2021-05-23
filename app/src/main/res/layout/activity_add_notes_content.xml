@@ -7,24 +7,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.AddNotesActivity"
     tools:showIn="@layout/activity_add_notes">
-    <EditText
+
+    <com.chinalwb.are.AREditText
         android:id="@+id/edtNoteContent"
         android:layout_width="match_parent"
-        android:layout_height="662dp"
+        android:layout_height="580dp"
         android:layout_margin="5dp"
-        android:layout_marginTop="20dp"
         android:backgroundTint="@android:color/transparent"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Write your notes here"
         android:inputType="textMultiLine"
-        android:textSize="18sp"
         android:textColor="@color/saddlebrown"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.5" />
+        app:layout_constraintVertical_bias="0.662" />
+
+    <LinearLayout
+        android:id="@+id/bottombar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="1000"
+        app:layout_constraintBottom_toBottomOf="@+id/edtNoteContent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.chinalwb.are.styles.toolbar.ARE_ToolbarDefault
+            android:id="@+id/areToolbar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="900"
+            android:background="@android:color/holo_orange_light"
+            android:gravity="center_vertical" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@color/design_default_color_secondary" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="95"
+            android:background="@color/bisque"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/arrow_right_foreground" />
+        </LinearLayout>
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"

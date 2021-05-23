@@ -9,5 +9,9 @@
             android:summaryOff="off"
             android:summaryOn="on"
             />
+        <EditTextPreference
+            android:key="alarm_time"
+            android:title=""
+            android:enabled="false"/>
     </PreferenceCategory>
 </PreferenceScreen>

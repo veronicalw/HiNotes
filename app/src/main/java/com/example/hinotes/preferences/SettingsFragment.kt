@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.*
 import com.example.hinotes.R
 import com.example.hinotes.alarmmanager.AlarmService
@@ -14,7 +13,7 @@ import java.util.*
 
 class SettingsFragment : PreferenceFragmentCompat() {
     private lateinit var pref: SwitchPreferenceCompat
-//    private lateinit var preferenceInfo: Preference
+    private lateinit var preferenceInfo: EditTextPreference
     lateinit var alarmService: AlarmService
 //    private val PREFS_NAME = "kotlinAlarm"
 
@@ -33,10 +32,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 Toast.makeText(activity, "Alarm Hidup", Toast.LENGTH_SHORT).show()
             } else {
                 pref.isChecked = false
-                val alarmManager: AlarmManager = (context as Activity).getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                val alarmManager: AlarmManager =
+                    (context as Activity).getSystemService(Context.ALARM_SERVICE) as AlarmManager
                 val intent = Intent(context as Activity, AlarmService::class.java)
-                var pendingIntent: PendingIntent = PendingIntent.getService(context as Activity, 0, intent, 0)
+                var pendingIntent: PendingIntent = PendingIntent.getService(
+                    context as Activity,
+                    0,
+                    intent,
+                    0
+                )
                 alarmManager.cancel(pendingIntent)
+                pref.isChecked = false
                 Toast.makeText(activity, "Alarm Mati", Toast.LENGTH_SHORT).show()
             }
             true
@@ -61,6 +67,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                             this.set(Calendar.HOUR_OF_DAY, hour)
                             this.set(Calendar.MINUTE, minute)
                             callback(this.timeInMillis)
+
+                            //Set Alarm Time Display
+                            preferenceInfo = findPreference("alarm_time")!!
+                            val sb = StringBuilder()
+                            sb.append(hour).append(":").append(minute)
+                            val str = sb.toString()
+                            preferenceInfo.setTitle("Alarm set to : "+str)
                         },
                         this.get(Calendar.HOUR_OF_DAY),
                         this.get(Calendar.MINUTE),
@@ -71,6 +84,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 this.get(Calendar.MONTH),
                 this.get(Calendar.DAY_OF_MONTH)
             ).show()
+
 //            preferenceInfo = findPreference("alarm_time")!!
 //            val alarmManager: AlarmManager = (context as Activity).getSystemService(Context.ALARM_SERVICE) as AlarmManager
 //            var timedText = "Alarm set for: " + alarmManager.nextAlarmClock

@@ -28,10 +28,10 @@
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
-    <EditText
+    <com.chinalwb.are.AREditText
         android:id="@+id/editContent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="580dp"
         android:backgroundTint="@android:color/transparent"
         android:ems="10"
         android:textSize="16sp"
@@ -42,6 +42,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarsEdit" />
 
+    <LinearLayout
+        android:id="@+id/bottombar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="1000"
+        app:layout_constraintBottom_toBottomOf="@+id/editContent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.chinalwb.are.styles.toolbar.ARE_ToolbarDefault
+            android:id="@+id/areToolbar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="900"
+            android:background="@android:color/holo_orange_light"
+            android:gravity="center_vertical" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@color/design_default_color_secondary" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="95"
+            android:background="@color/bisque"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/arrow_right_foreground" />
+        </LinearLayout>
+    </LinearLayout>
     <ProgressBar
         android:id="@+id/progressBarEdit"
         style="?android:attr/progressBarStyle"

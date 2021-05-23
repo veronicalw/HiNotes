@@ -4,5 +4,9 @@
     <item
         android:id="@+id/nav_save"
         android:title="Save"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/nav_save_html"
+        android:title="Save to HTML"
+        app:showAsAction="never" />
 </menu>
